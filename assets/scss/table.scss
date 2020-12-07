@@ -1,9 +1,50 @@
 @use "colors";
 
+#createGrade {
+    width: 60%;
+    padding: 2rem;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+
+    & > div {
+        width: 100%;
+        & > h2 {
+            width: 20rem;
+            padding: 0.5rem;
+            margin: 1rem;
+            border-bottom: 2px solid #f1f1f1;
+        }
+    }
+
+    & > form {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;;
+        align-items: flex-start;
+        margin-left: 1rem;
+        width: 100%;
+
+        & > * {
+            margin: 1rem 0;
+            display: block;
+        }
+
+        & > input {
+            width: 75%;
+        }
+    }
+}
+
 table {
-    border-radius: 10px;
+    position: relative;
+    // width: 100%;
+    border-radius: 5px;
     border-collapse: collapse;
-    box-shadow: 0 5px 8px  0 rgba(0,0,0,0.4);
+    // box-shadow: 0 5px 8px  0 rgba(0,0,0,0.4);
+    
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
 
     tr {
         th {
@@ -15,18 +56,22 @@ table {
                 flex-direction: column;
 
                 img.sortImg {
-                    width: 20px;
+                    min-width: 20px;
                     display: none;
                 }
             }
         }
 
+        &#columnHeadings {
+            border-bottom: 2px solid #f1f1f1;
+        }
+
         th.course {
-            width: 30rem;
+            width: 25rem;
         }
 
         th.grade {
-            width: 150px;
+            width: 125px;
         }
 
         td {
@@ -53,11 +98,15 @@ table {
     }    
 }
 
-.rotate-table-enter {
-    -webkit-transition: -webkit-transform .8s ease-in-out;
-    -ms-transition: -ms-transform .8s ease-in-out;
-    transition: transform .8s ease-in-out;  
-    transform:rotate(45deg);
-    -ms-transform:rotate(45deg);
-    -webkit-transform:rotate(45deg);;
+.flip-enter-active {
+  transition: all .2s cubic-bezier(0.55, 0.085, 0.68, 0.53); //ease-in-quad
+}
+
+.flip-leave-active {
+  transition: all .25s cubic-bezier(0.25, 0.46, 0.45, 0.94); //ease-out-quad
+}
+
+.flip-enter, .flip-leave-to {
+  transform: scaleY(0) translateZ(0);
+  opacity: 0;
 }

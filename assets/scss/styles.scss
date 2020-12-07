@@ -16,23 +16,25 @@ body, html, #root {
 
 h1, h2, h3, h4, h5, h6, button { 
     font-family: 'Noto Sans JP';
+    font-weight: bold;
 }
 
 a, a:-webkit-any-link {
-    // color: colors.$secondaryFgColor !important;
+    color: colors.$secondaryFgColor !important;
     text-decoration: none;
     font-size: 1.2rem;
 
     &:visited {
-        // color: colors.$secondaryFgColor !important;
+        color: colors.$secondaryFgColor !important;
     }
 
     &:hover {
-        // color: colors.$mainFgColor !important;
+        color: colors.$mainFgColor !important;
     }
 }
 
 @import "./nav.scss";
+@import "./form.scss";
 @import "./table.scss";
 @import "./grades.scss";
 
