@@ -3,7 +3,7 @@
 table {
     border-radius: 10px;
     border-collapse: collapse;
-    box-shadow: 5px 8px 12px  5px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 8px  0 rgba(0,0,0,0.4);
 
     tr {
         th {
@@ -20,12 +20,44 @@ table {
                 }
             }
         }
+
+        th.course {
+            width: 30rem;
+        }
+
+        th.grade {
+            width: 150px;
+        }
+
         td {
             border-collapse: collapse;
             padding: 1rem;
             text-align: center;
             max-width: 75%;
-            width: 30rem;
+            width: 155px;
+
+            & > div.imgContainer {
+                display: none;
+                flex-direction: row;
+
+                img {
+                    width: 30px;
+                    margin: 0 1rem 0 1rem;
+                }
+            }
+        }
+
+        &:hover > td > div.imgContainer {
+            display: flex;
         }
     }    
+}
+
+.rotate-table-enter {
+    -webkit-transition: -webkit-transform .8s ease-in-out;
+    -ms-transition: -ms-transform .8s ease-in-out;
+    transition: transform .8s ease-in-out;  
+    transform:rotate(45deg);
+    -ms-transform:rotate(45deg);
+    -webkit-transform:rotate(45deg);;
 }
