@@ -1,0 +1,38 @@
+@use "colors";
+
+body, html, #root {
+    overflow-y: hidden;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0 auto;
+    font-family: 'Roboto';
+}
+
+#root {
+    height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6, button { 
+    font-family: 'Noto Sans JP';
+}
+
+a, a:-webkit-any-link {
+    // color: colors.$secondaryFgColor !important;
+    text-decoration: none;
+    font-size: 1.2rem;
+
+    &:visited {
+        // color: colors.$secondaryFgColor !important;
+    }
+
+    &:hover {
+        // color: colors.$mainFgColor !important;
+    }
+}
+
+@import "./nav.scss";
+@import "./table.scss";
+@import "./grades.scss";
+

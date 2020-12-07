@@ -3,21 +3,39 @@
     <head>
         <title>Grading App</title> 
         <meta charset="utf-8"/>
+        <link href="/favicon.ico" rel="icon" type="image/x-icon">
+
+        <!-- Vue -->
         <script src="https://unpkg.com/vue/dist/vue.js"></script>
-        <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
-        <script src="https://unpkg.com/vuex"></script>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+
+
+        <!-- Custom Vue Components -->
+        <script src="/components/grades.vue.js"></script>
+
+        <!---------------->
+        <!--   Fonts    -->
+        <!---------------->
+
+        <!-- Noto Sans -->
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP" rel="stylesheet">
+        
+        <!-- Roboto -->
+        <link href="https://fonts.googleapis.com/css2?family=Roboto" rel="stylesheet">
+
+        <!-- Default styles -->
+        <link href="/assets/css/styles.css" rel="stylesheet">
+
+        <script src="https://cdn.jsdelivr.net/npm/vue-js-toggle-button@1.3.3/dist/index.min.js"></script>
     </head>
     <body>
         <div id="root">
-            {{ message }}
+            <Grades />
         </div>
         <script>
-            const root = new Vue({
-                el: "#root",
-                data: {
-                    message: "Fuck you"
-                }
-            });
+            Vue.component("Grades", Grades);
+            const root = new Vue({}).$mount("#root");
         </script>
     </body>
 </html>

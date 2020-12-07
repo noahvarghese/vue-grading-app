@@ -1,0 +1,32 @@
+@use "colors";
+
+nav {
+    display: flex;
+    height: 65px;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    justify-items: center;
+    padding-left: 2rem;
+    padding-right: 1rem;
+    border-bottom: 1px solid grey;
+    border-radius: 0 0 0 25px;
+    background-color: #f1f1f1;
+
+
+    h1 {
+        flex: 2;
+        text-align: left;
+        margin-top: 0.75rem;
+    }
+
+    ul {
+        list-style-type: none;
+
+        li {
+            display: inline-block;
+            padding: 1.25rem;
+        }
+    }
+
+}

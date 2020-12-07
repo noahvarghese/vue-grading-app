@@ -1,0 +1,31 @@
+@use "colors";
+
+table {
+    border-radius: 10px;
+    border-collapse: collapse;
+    box-shadow: 5px 8px 12px  5px rgba(0,0,0,0.2);
+
+    tr {
+        th {
+            border-collapse: collapse;
+            padding: 1rem;
+
+            & > div.sort {
+                display: inline-flex;
+                flex-direction: column;
+
+                img.sortImg {
+                    width: 20px;
+                    display: none;
+                }
+            }
+        }
+        td {
+            border-collapse: collapse;
+            padding: 1rem;
+            text-align: center;
+            max-width: 75%;
+            width: 30rem;
+        }
+    }    
+}
