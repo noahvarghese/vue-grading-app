@@ -68,7 +68,6 @@ const Grades = {
             </div>
         </div>
     `,
-    ref: "grades",
     data() {
         return {
             show: true,
