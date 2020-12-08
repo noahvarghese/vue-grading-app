@@ -43,7 +43,11 @@
                     <div id="toolBar">
                         <div>
                             <transition name="flip" mode="out-in">
-                                <input v-if="show" type="search" name="search" placeholder="Search" id="search" />
+                                <div v-if="show">
+                                    <input v-model="searchText" type="search" name="search" placeholder="Search" id="search" v-on:change="search(searchText)" />
+                                    <button :class="[showHonours ? 'active' : '']" v-on:click="setHonours">Honours</button>
+                                    <button :class="[showFailed ? 'active' : '']" v-on:click="setFailed">Failed</button>
+                                </div>
                             </transition>
                         </div>
                         <button v-on:click="show = !show"><span v-if="show">Create</span><span v-else>Cancel</span></button>
@@ -110,8 +114,13 @@
         </div>
         <script>
             let grades = [{ course: "test", grade: 0}];
+            let filteredGrades = [];
+            // Deep copy of grades so any modifications to filtered 
+            // array don't affect the other
+            grades.forEach(grade => filteredGrades.push(grade));
             let grade = "";
             let course = "";
+            let searchText = "";
 
             window.addEventListener("load", () => {
                 // Vue.component("Grades", Grades);
@@ -121,9 +130,12 @@
                     data: function() {
                         return {
                             show: true,
-                            grades,
+                            grades: filteredGrades,
                             course,
-                            grade
+                            grade,
+                            searchText,
+                            showHonours: true,
+                            showFailed: true
                         }
                     },
                     methods: {
@@ -158,6 +170,43 @@
                         },
                         sortGradeDesc: function(event) {
 
+                        },
+                        setHonours: function() {
+                            this.showHonours = !this.showHonours;
+
+                            if ( ! this.showHonours ) {
+                                // show everything below 80
+                                this.grades = grades.filter((grade) => grade.grade < 80);
+                            } else {
+                                //
+                            }
+                        },
+                        setFailed: function() {
+                            this.showFailed = !this.showFailed;
+                            if ( ! this.showFailed ) {
+                                this.grades = grades.filter((grade) => grade.grade > 49);
+                            } else {
+
+                            }
+                        },
+                        search: function(_searchText) {
+                            console.log(this.searchText, _searchText);
+                            // console.log(val);
+                            if ( val !== "" ) {
+                                this.grades = grades.filter((grade) => {
+                                    if ( grade.course.includes(val) ) {
+                                        return true;
+                                    }
+                                    else if ( grade.grade.toString().includes(val) ) {
+                                        return true;
+                                    }
+
+                                    return false;
+                                })
+                            }
+                            else {
+                                this.grades = grades;
+                            }
                         }
                     }
                 })

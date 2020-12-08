@@ -20,16 +20,16 @@ h1, h2, h3, h4, h5, h6, button {
 }
 
 a, a:-webkit-any-link {
-    color: colors.$secondaryFgColor !important;
+    color: #64FFDA;
     text-decoration: none;
     font-size: 1.2rem;
 
     &:visited {
-        color: colors.$secondaryFgColor !important;
+        color: #64FFDA;
     }
 
     &:hover {
-        color: colors.$mainFgColor !important;
+        color: #26A69A;
 
     }
 }
