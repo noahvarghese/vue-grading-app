@@ -105,6 +105,7 @@
                                         <span>Grade</span>
                                     </label>
                                 </div>
+                                <input v-model="id" type="hidden" name="id" />
                                 <button v-on:click="create">Create</button>
                             </form>
                         </div>
@@ -120,6 +121,7 @@
             grades.forEach(grade => filteredGrades.push(grade));
             let grade = "";
             let course = "";
+            let id = "";
             let searchText = "";
 
             window.addEventListener("load", () => {
@@ -133,6 +135,7 @@
                             grades: filteredGrades,
                             course,
                             grade,
+                            id,
                             searchText,
                             showHonours: true,
                             showFailed: true
@@ -156,6 +159,13 @@
                             else {
                                 this.grades = grades;
                             }
+                        },
+                        show: function(newValue, oldValue) {
+                            if ( oldValue === false ) {
+                                this.id = "";
+                                this.grade = "";
+                                this.course = "";
+                            }
                         }
                     },
                     methods: {
@@ -172,6 +182,8 @@
                         edit: function(courseGrade) {
                             this.course = courseGrade.course;
                             this.grade = courseGrade.grade;
+                            this.id = grades.indexOf(courseGrade);
+                            console.log(this.id);
                             this.show = !this.show;
                             // need to make a way that saving updates this
                         },

@@ -46,6 +46,10 @@ table {
     
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
 
+    thead {
+        border-bottom: 3px solid #f1f1f1;
+    }
+
     tr {
         th {
             border-collapse: collapse;
@@ -60,10 +64,6 @@ table {
                     display: none;
                 }
             }
-        }
-
-        &#columnHeadings {
-            border-bottom: 2px solid #f1f1f1;
         }
 
         th.course {
