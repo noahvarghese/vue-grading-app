@@ -44,7 +44,7 @@
                         <div>
                             <transition name="flip" mode="out-in">
                                 <div v-if="show">
-                                    <input v-model="searchText" type="search" name="search" placeholder="Search" id="search" v-on:change="search(searchText)" />
+                                    <input v-model="searchText" type="search" name="search" placeholder="Search" id="search" />
                                     <button :class="[showHonours ? 'active' : '']" v-on:click="setHonours">Honours</button>
                                     <button :class="[showFailed ? 'active' : '']" v-on:click="setFailed">Failed</button>
                                 </div>
@@ -138,6 +138,26 @@
                             showFailed: true
                         }
                     },
+                    watch: {
+                        searchText: function(newValue, oldValue) {
+                            let _searchText = newValue;
+                            if ( _searchText !== "" ) {
+                                this.grades = grades.filter((grade) => {
+                                    if ( grade.course.includes(_searchText) ) {
+                                        return true;
+                                    }
+                                    else if ( grade.grade.toString().includes(_searchText) ) {
+                                        return true;
+                                    }
+
+                                    return false;
+                                })
+                            }
+                            else {
+                                this.grades = grades;
+                            }
+                        }
+                    },
                     methods: {
                         create: function(event) {
                             event.preventDefault();
@@ -189,25 +209,7 @@
 
                             }
                         },
-                        search: function(_searchText) {
-                            console.log(this.searchText, _searchText);
-                            // console.log(val);
-                            if ( val !== "" ) {
-                                this.grades = grades.filter((grade) => {
-                                    if ( grade.course.includes(val) ) {
-                                        return true;
-                                    }
-                                    else if ( grade.grade.toString().includes(val) ) {
-                                        return true;
-                                    }
-
-                                    return false;
-                                })
-                            }
-                            else {
-                                this.grades = grades;
-                            }
-                        }
+                        
                     }
                 })
             });
