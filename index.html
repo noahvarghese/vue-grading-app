@@ -106,7 +106,8 @@
                                     </label>
                                 </div>
                                 <input v-model="id" type="hidden" name="id" />
-                                <button v-on:click="create">Create</button>
+                                <button v-if="id.toString().length > 0" v-on:click="update">Update</button>
+                                <button v-else v-on:click="create">Create</button>
                             </form>
                         </div>
                     </transition>
@@ -178,14 +179,24 @@
                             this.show = !this.show;
                             this.course = "";
                             this.grade = "";
+                            this.id = "";
                         },
                         edit: function(courseGrade) {
+                            this.show = !this.show;
                             this.course = courseGrade.course;
                             this.grade = courseGrade.grade;
                             this.id = grades.indexOf(courseGrade);
-                            console.log(this.id);
-                            this.show = !this.show;
+                            // this.show = !this.show;
                             // need to make a way that saving updates this
+                        },
+                        update: function(event) {
+                            event.preventDefault();
+                            grades[this.id] = { course: this.course, grade: this.grade };
+                            this.grades = grades;
+                            this.course = "";
+                            this.grade = "";
+                            this.id = "";
+                            this.show = !this.show;
                         },
                         remove: function(courseGrade) {
                             const index = this.grades.indexOf(courseGrade);
