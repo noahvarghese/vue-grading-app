@@ -37,6 +37,11 @@
             <div id="grades">
                 <nav>
                     <h1>Vue My Courses</h1>
+                    <ul>
+                        <li>Max: {{ max }}</li>
+                        <li>Min: {{ min }}</li>
+                        <li>Avg: {{ avg }}</li>
+                    </ul>
                 </nav>
                 <h1 class="title">Grades</h1>
                 <div id="container">
@@ -56,18 +61,18 @@
                         <table id="allGrades" v-if="show">
                             <thead id="columnHeadings">
                                 <tr>
-                                    <th class="course">
+                                    <th class="course" v-on:click="setCourseOrder">
                                         Course
                                         <div class="sort">
-                                            <img v-on:click="sortCourseAsc" class="sortImg" src="/assets/img/asc.png" alt="ascending" />
-                                            <img v-on:click="sortCourseDesc" class="sortImg" src="/assets/img/desc.png" alt="descending" />
+                                            <img v-if="courseOrder > 1" class="sortImg" src="/assets/img/asc.png" alt="ascending" />
+                                            <img v-else-if="courseOrder > 0" class="sortImg" src="/assets/img/desc.png" alt="descending" />
                                         </div>
                                     </th>
-                                    <th class="grade">
+                                    <th class="grade" v-on:click="setGradeOrder">
                                         Grade
                                         <div class="sort">
-                                            <img v-on:click="sortGradeAsc" class="sortImg" src="/assets/img/asc.png" alt="ascending" />
-                                            <img v-on:click="sortGradeDesc" class="sortImg" src="/assets/img/desc.png" alt="descending" />
+                                            <img v-if="gradeOrder > 1" v-on:click="sortGradeAsc" class="sortImg" src="/assets/img/asc.png" alt="ascending" />
+                                            <img v-else-if="gradeOrder > 0" v-on:click="sortGradeDesc" class="sortImg" src="/assets/img/desc.png" alt="descending" />
                                         </div>
                                     </th>
                                     <th></th>
@@ -124,6 +129,33 @@
             let course = "";
             let id = "";
             let searchText = "";
+            let courseOrder = 0;
+            let gradeOrder = 0;
+
+            // if no entries prevents ugly values
+            let min = "";
+            let max = "";
+            let avg = "";
+
+            if ( grades.length > 0 ) {
+                max = 0;
+                min = Infinity;
+                avg = 0;
+
+                let sum = 0;
+                grades.forEach((grade) => {
+                    if ( grade.grade < min ) {
+                        min = grade.grade;
+                    }
+
+                    if ( grade.grade > max ) {
+                        max = grade.grade;
+                    }
+
+                    sum += grade.grade;
+                });
+                avg = sum / grades.length;
+            }
 
             window.addEventListener("load", () => {
                 // Vue.component("Grades", Grades);
@@ -132,11 +164,16 @@
                     el: "#root",
                     data: function() {
                         return {
+                            courseOrder,
+                            gradeOrder,
                             show: true,
                             grades: filteredGrades,
                             course,
                             grade,
                             id,
+                            max,
+                            min,
+                            avg,
                             searchText,
                             showHonours: true,
                             showFailed: true
@@ -167,6 +204,28 @@
                                 this.grade = "";
                                 this.course = "";
                             }
+                        },
+                        grades: function(newValue, oldValue) {
+                            console.log("changing");
+                            min = Infinity;
+                            max = 0;
+                            avg = 0;
+                            let sum = 0;
+                            newValue.forEach((grade) => {
+                                if ( grade.grade < min ) {
+                                    min = grade.grade;
+                                }
+
+                                if ( grade.grade > max ) {
+                                    max = grade.grade;
+                                }
+
+                                sum += grade.grade;
+                            });
+                            avg = sum / newValue.length;
+                            this.min = min < Infinity ? min : "";
+                            this.max = newValue.length > 0 ? max : "";
+                            this.avg = isNaN(avg) ? "" : avg;
                         }
                     },
                     methods: {
@@ -201,6 +260,20 @@
                         remove: function(courseGrade) {
                             const index = this.grades.indexOf(courseGrade);
                             this.grades.splice(index, 1);
+                        },
+                        setCourseOrder: function() {
+                            console.log("clicked");
+                            // prevents the numer from going over 2
+                            // gives us three settings
+                            // none, asc, desc
+                            this.courseOrder = (this.courseOrder + 1) % 3;
+                            console.log(this.courseOrder)
+                        },
+                        setGradeOrder: function() {
+                            // prevents the numer from going over 2
+                            // gives us three settings
+                            // none, asc, desc
+                            this.gradeOrder = (this.gradeOrder + 1) % 3;
                         },
                         sortCourseAsc: function(event) {
 
