@@ -8,7 +8,9 @@ const Grades = {
             <div id="container">
                 <div id="toolBar">
                     <div>
-                        <input v-if="show" type="search" name="search" placeholder="Search" id="search" />
+                        <transition name="flip" mode="out-in">
+                            <input v-if="show" type="search" name="search" placeholder="Search" id="search" />
+                        </transition>
                     </div>
                     <button v-on:click="show = !show"><span v-if="show">Create</span><span v-else>Cancel</span></button>
                 </div>
@@ -47,18 +49,31 @@ const Grades = {
                             <h2>Create New</h2>
                         </div>    
                         <form>
-                            <input type="text" name="course" id="course" aria-label="course" placeholder="Course" />
-                            <input type="number" name="grade" id="grade" aria-label="grade" placeholder="99" />
-                            <button>Create</button>
+                            <div class="input">
+                                <input v-model="course" type="text" name="course" id="course" aria-label="course" autocomplete="off" required />
+                                <label for="course">
+                                    <span>Course</span>
+                                </label>
+                            </div>
+                            <div class="input">
+                                <input v-model="grade" type="number" name="grade" id="grade" aria-label="grade" autocomplete="off" required />
+                                <label for="grade">
+                                    <span>Grade</span>
+                                </label>
+                            </div>
+                            <button v-on:click="create">Create</button>
                         </form>
                     </div>
                 </transition>
             </div>
         </div>
     `,
+    ref: "grades",
     data() {
         return {
             show: true,
+            course: "",
+            grade: "",
             grades: [
                 {
                     course: "Emerging Web Tech",
@@ -69,6 +84,19 @@ const Grades = {
                     grade: 0
                 }
             ]
+        }
+    },
+    methods: {
+        create: (event) => {
+            event.preventDefault();
+            console.log(this);
+            this.grades.push({
+                course: course.value,
+                grade: grade.value
+            });
+            course.value = "";
+            grade.value = "";
+            show = true;
         }
     }
 }
