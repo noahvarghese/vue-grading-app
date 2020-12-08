@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <!-- Standard website things -->
         <title>Grading App</title> 
         <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,9 +12,8 @@
         <script src="https://unpkg.com/vue/dist/vue.js"></script>
         <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
 
-
         <!-- Custom Vue Components -->
-        <script src="/components/grades.vue.js"></script>
+        <!-- <script src="/components/grades.vue.js"></script> -->
 
         <!---------------->
         <!--   Fonts    -->
@@ -26,10 +26,11 @@
         <!-- Roboto -->
         <link href="https://fonts.googleapis.com/css2?family=Roboto" rel="stylesheet">
 
-        <!-- Default styles -->
+        <!-- Custom styles -->
         <link href="/assets/css/styles.css" rel="stylesheet">
 
-        <!-- <script src="https://cdn.jsdelivr.net/npm/vue-js-toggle-button@1.3.3/dist/index.min.js"></script> -->
+        <!-- Toggle button -->
+        <script src="https://cdn.jsdelivr.net/npm/vue-js-toggle-button@1.3.3/dist/index.min.js"></script>
     </head>
     <body>
         <div id="root">
@@ -49,33 +50,39 @@
                     </div>
                     <transition name="flip" mode="out-in">
                         <table id="allGrades" v-if="show">
-                            <tr id="columnHeadings">
-                                <th class="course">
-                                    Course
-                                    <div class="sort">
-                                        <img class="sortImg" src="/assets/img/asc.png" alt="ascending" />
-                                        <img class="sortImg" src="/assets/img/desc.png" alt="descending" />
-                                    </div>
-                                </th>
-                                <th class="grade">
-                                    Grade
-                                    <div class="sort">
-                                        <img class="sortImg" src="/assets/img/asc.png" alt="ascending" />
-                                        <img class="sortImg" src="/assets/img/desc.png" alt="descending" />
-                                    </div>
-                                </th>
-                                <th></th>
-                            </tr>
-                            <tr v-for="grade in grades" v-bind:key="grade.course">
-                                <td>{{ grade.course }}</td>
-                                <td>{{ grade.grade }}</td>
-                                <td>
-                                    <div class="imgContainer">
-                                        <img src="/assets/img/edit.png" alt="edit" />
-                                        <img src="/assets/img/delete.png" alt="delete" />
-                                    </div>
-                                </td>
-                            </tr>
+                            <thead id="columnHeadings">
+                                <tr>
+                                    <th class="course">
+                                        Course
+                                        <div class="sort">
+                                            <img v-on:click="sortCourseAsc" class="sortImg" src="/assets/img/asc.png" alt="ascending" />
+                                            <img v-on:click="sortCourseDesc" class="sortImg" src="/assets/img/desc.png" alt="descending" />
+                                        </div>
+                                    </th>
+                                    <th class="grade">
+                                        Grade
+                                        <div class="sort">
+                                            <img v-on:click="sortGradeAsc" class="sortImg" src="/assets/img/asc.png" alt="ascending" />
+                                            <img v-on:click="sortGradeDesc" class="sortImg" src="/assets/img/desc.png" alt="descending" />
+                                        </div>
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <!-- <transition-group name="bounce" tag="tr"> -->
+                            <tbody name="bounce" is="transition-group">
+                                <tr v-for="grade in grades" v-bind:key="grade.course">
+                                    <td>{{ grade.course }}</td>
+                                    <td>{{ grade.grade }}</td>
+                                    <td>
+                                        <div class="imgContainer">
+                                            <img v-on:click="edit(grade)" src="/assets/img/edit.png" alt="edit" course="grade.course"/>
+                                            <img v-on:click="remove(grade)" src="/assets/img/delete.png" alt="delete" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            <!-- </transition-group> -->
+                            </tbody>
                         </table>
                         <div id="createGrade" v-else>
                             <div>
@@ -83,7 +90,7 @@
                             </div>    
                             <form>
                                 <div class="input">
-                                    <input v-model="course" type="text" name="course" id="course" aria-label="course" autocomplete="off" required />
+                                    <input v-model="course" type="text" name="course" id="course" autocomplete="off" required />
                                     <label for="course">
                                         <span>Course</span>
                                     </label>
@@ -102,7 +109,7 @@
             </div>
         </div>
         <script>
-            let grades = [];
+            let grades = [{ course: "test", grade: 0}];
             let grade = "";
             let course = "";
 
@@ -122,11 +129,35 @@
                     methods: {
                         create: function(event) {
                             event.preventDefault();
+                            // check if the course is added already
+                            // or grade < 0 or > 100
+                            // send back an error
                             this.grades.push({course: this.course, grade: this.grade});
-                            // console.log(grades, this.course, this.grade);
                             this.show = !this.show;
                             this.course = "";
                             this.grade = "";
+                        },
+                        edit: function(courseGrade) {
+                            this.course = courseGrade.course;
+                            this.grade = courseGrade.grade;
+                            this.show = !this.show;
+                            // need to make a way that saving updates this
+                        },
+                        remove: function(courseGrade) {
+                            const index = this.grades.indexOf(courseGrade);
+                            this.grades.splice(index, 1);
+                        },
+                        sortCourseAsc: function(event) {
+
+                        },
+                        sortCourseDesc: function(event) {
+
+                        },
+                        sortGradeAsc: function(event) {
+
+                        },
+                        sortGradeDesc: function(event) {
+
                         }
                     }
                 })

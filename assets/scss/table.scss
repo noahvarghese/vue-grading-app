@@ -98,6 +98,24 @@ table {
     }    
 }
 
+.bounce-enter-active {
+    animation: bounce-in .5s;
+}
+.bounce-leave-active {
+    animation: bounce-in .5s reverse;
+}
+@keyframes bounce-in {
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(1.5);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
 .flip-enter-active {
   transition: all .2s cubic-bezier(0.55, 0.085, 0.68, 0.53); //ease-in-quad
 }
