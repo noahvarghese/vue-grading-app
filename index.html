@@ -95,7 +95,8 @@
                         </table>
                         <div id="createGrade" v-else>
                             <div>
-                                <h2>Create New</h2>
+                                <h2 v-if="id.toString().length > 0">Update Existing</h2>
+                                <h2 v-else>Create New</h2>
                             </div>    
                             <form>
                                 <div class="input">
@@ -111,8 +112,10 @@
                                     </label>
                                 </div>
                                 <input v-model="id" type="hidden" name="id" />
-                                <button v-if="id.toString().length > 0" v-on:click="update">Update</button>
-                                <button v-else v-on:click="create">Create</button>
+                                <span v-if="gradeError" class="error">{{ gradeError }}</span>
+                                <span v-if="courseError" class="error">{{ courseError }}</span>
+                                <button v-if="id.toString().length > 0" v-on:click="update" :disabled="courseError.length > 0 || gradeError.length > 0">Update</button>
+                                <button v-else v-on:click="create" v-on:click="update" :disabled="courseError.length > 0 || gradeError.length > 0">Create</button>
                             </form>
                         </div>
                     </transition>
@@ -131,6 +134,8 @@
             let searchText = "";
             let courseOrder = 0;
             let gradeOrder = 0;
+            let courseError = "";
+            let gradeError = "";
 
             // if no entries prevents ugly values
             let min = "";
@@ -174,12 +179,51 @@
                             max,
                             min,
                             avg,
+                            courseError,
+                            gradeError,
                             searchText,
-                            showHonours: true,
-                            showFailed: true
+                            showHonours: false,
+                            showFailed: false 
                         }
                     },
                     watch: {
+                        course: function(newValue, oldValue) {
+                            courseError = "";
+
+                            // checking if id is set checks whether the value is NOT being updated
+
+                            // if course entry exists and value is being create
+                            if ( grades.find(grade => grade.course === newValue) !== undefined && typeof this.id !== "number" ) {
+                                courseError = "An entry for this course already exists, please go and edit instead";
+                            }     
+                            // if the value is being updated 
+                            // the value exists
+                            // but at a different index than the what this.id is set to
+                            else if ( typeof this.id === "number" ) {
+                                let taken = false;
+                                for ( let i = 0; i < grades.length; i++ ) {
+                                    if ( grades[i].course === newValue && i !== this.id ) {
+                                        taken = true;
+                                        break;
+                                    } 
+                                }
+                                if ( taken ) {
+                                    console.log("correct error")
+                                    courseError = "An entry for this course already exists, please go and edit instead";
+                                }
+                            }
+                                
+                            this.courseError = courseError;
+                        },
+                        grade: function(newValue, oldValue) {
+                            gradeError = "";
+
+                            if ( newValue > 100 || newValue < 0 ) {
+                                gradeError = "Grade must be between 0 and 100";
+                            }
+
+                            this.gradeError = gradeError;
+                        },
                         searchText: function(newValue, oldValue) {
                             let _searchText = newValue;
                             if ( _searchText !== "" ) {
@@ -206,7 +250,6 @@
                             }
                         },
                         grades: function(newValue, oldValue) {
-                            console.log("changing");
                             min = Infinity;
                             max = 0;
                             avg = 0;
@@ -234,7 +277,8 @@
                             // check if the course is added already
                             // or grade < 0 or > 100
                             // send back an error
-                            this.grades.push({course: this.course, grade: this.grade});
+                            grades.push({course: this.course, grade: this.grade});
+                            this.grades = grades;
                             this.show = !this.show;
                             this.course = "";
                             this.grade = "";
@@ -262,12 +306,10 @@
                             this.grades.splice(index, 1);
                         },
                         setCourseOrder: function() {
-                            console.log("clicked");
                             // prevents the numer from going over 2
                             // gives us three settings
                             // none, asc, desc
                             this.courseOrder = (this.courseOrder + 1) % 3;
-                            console.log(this.courseOrder)
                         },
                         setGradeOrder: function() {
                             // prevents the numer from going over 2
@@ -292,17 +334,17 @@
 
                             if ( ! this.showHonours ) {
                                 // show everything below 80
-                                this.grades = grades.filter((grade) => grade.grade < 80);
+                                this.grades = grades
                             } else {
-                                //
+                                this.grades = grades.filter((grade) => grade.grade > 79);
                             }
                         },
                         setFailed: function() {
                             this.showFailed = !this.showFailed;
                             if ( ! this.showFailed ) {
-                                this.grades = grades.filter((grade) => grade.grade > 49);
+                                this.grades = grades;
                             } else {
-
+                                this.grades = grades.filter((grade) =>  grade.grade < 50);
                             }
                         },
                         
