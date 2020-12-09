@@ -71,8 +71,8 @@
                                     <th class="grade" v-on:click="setGradeOrder">
                                         Grade
                                         <div class="sort">
-                                            <img v-if="gradeOrder > 1" v-on:click="sortGradeAsc" class="sortImg" src="/assets/img/asc.png" alt="ascending" />
-                                            <img v-else-if="gradeOrder > 0" v-on:click="sortGradeDesc" class="sortImg" src="/assets/img/desc.png" alt="descending" />
+                                            <img v-show="gradeOrder === 2" v-on:click="sortGradeAsc" class="sortImg" src="/assets/img/asc.png" alt="ascending" />
+                                            <img v-show="gradeOrder === 1" v-on:click="sortGradeDesc" class="sortImg" src="/assets/img/desc.png" alt="descending" />
                                         </div>
                                     </th>
                                     <th></th>
@@ -208,7 +208,6 @@
                                     } 
                                 }
                                 if ( taken ) {
-                                    console.log("correct error")
                                     courseError = "An entry for this course already exists, please go and edit instead";
                                 }
                             }

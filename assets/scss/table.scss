@@ -58,10 +58,14 @@ table {
             & > div.sort {
                 display: inline-flex;
                 flex-direction: column;
+                position: relative;
 
                 img.sortImg {
-                    min-width: 20px;
-                    display: none;
+                    position: absolute;
+                    bottom: -2px;
+                    left: 5px;
+                    min-width: 10px;
+                    width:  1rem;
                 }
             }
         }
