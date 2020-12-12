@@ -10,7 +10,7 @@ This a purely local app, no server calls ecept for page load, all data is stored
 ```bash
 git clone https://github.com/noahvarghese/vue-grading-app
 cd vue-grading-app
-npm i && npm i -D
+npm run dev
 
 # If windows
 start index.html

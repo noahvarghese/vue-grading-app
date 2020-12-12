@@ -6,9 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "sass assets/scss/:assets/css/",
-    "dev": "sass --watch assets/scss:assets/css"
+    "dev": "npm i && npm i -D && sass --watch assets/scss:assets/css"
   },
   "dependencies": {
+    "express": "^4.17.1",
     "sass": "^1.30.0"
   },
   "keywords": [],
