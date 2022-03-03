@@ -4,7 +4,7 @@
 ## Description
 This lab is made to be as simple a vue app as possible, no npm packages are necessary. (Except to compile the scss)
 The requirements were simplistic vue app, and I wanted to learn scss, so here's the compromise.
-This a purely local app, no server calls ecept for page load, all data is stored lcient side.
+This a purely local app, no server calls ecept for page load, all data is stored client side.
 
 ## Setup
 ```bash
